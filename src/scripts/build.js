@@ -6,7 +6,7 @@ process.on('unhandledRejection', err => {
   throw err;
 });
 
-require('../config/env');
+require('../../config/env');
 
 const path = require('path');
 const chalk = require('chalk');
@@ -15,7 +15,7 @@ const webpack = require('webpack');
 const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
 const FileSizeReporter = require('react-dev-utils/FileSizeReporter');
 
-const config = require('../config/webpack.config.prod');
+const config = require('../../config/webpack.config.prod');
 
 const measureFileSizesBeforeBuild =
   FileSizeReporter.measureFileSizesBeforeBuild;

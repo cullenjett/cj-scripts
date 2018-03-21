@@ -10,8 +10,6 @@
     "cj-scripts": "src/index.js"
   },
   "scripts": {
-    "start": "node src start",
-    "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
     "start-prod": "export NODE_ENV=production && node server",
     "precommit": "lint-staged",
@@ -19,13 +17,8 @@
     "format": "prettier --write \"src/**/*.{js,json,css,md}\""
   },
   "lint-staged": {
-    "*.js": [
-      "npm run lint"
-    ],
-    "*.{js,json,css,md}": [
-      "npm run format",
-      "git add"
-    ]
+    "*.js": ["npm run lint"],
+    "*.{js,json,css,md}": ["npm run format", "git add"]
   },
   "dependencies": {
     "autoprefixer": "^8.1.0",
@@ -93,12 +86,8 @@
     "singleQuote": true
   },
   "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx}"
-    ],
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ],
+    "collectCoverageFrom": ["src/**/*.{js,jsx}"],
+    "snapshotSerializers": ["enzyme-to-json/serializer"],
     "setupFiles": [
       "<rootDir>/config/jest/browserMocks.js",
       "<rootDir>/config/polyfills.js"
@@ -114,8 +103,6 @@
       "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
       "^(?!.*\\.(js|jsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
     },
-    "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"
-    ]
+    "transformIgnorePatterns": ["[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"]
   }
 }
