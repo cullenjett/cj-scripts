@@ -13,8 +13,7 @@ A CLI for computer gangsters.
 * Install it: `npm i cj-scripts`
 * Run some commands (probably from your `package.json` scripts):
   * `cj-scripts start`
-  * `cj-scripts lint`
-  * `cj-scripts format`
+  * `cj-scripts test`
   * `cj-scripts build`
   * `cj-scripts start-prod`
 
@@ -22,10 +21,8 @@ A CLI for computer gangsters.
 
 * `cj-scripts start`
   * Fires up `webpack-dev-server`
-* `cj-scripts lint`
-  * Runs `eslint`
-* `cj-scripts format`
-  * Cleans things up with `prettier`
+* `cj-scripts test`
+  * Run `jest` in watch mode
 * `cj-scripts build`
   * Creates a `/build` directory full of compiled stuff
 * `cj-scripts start-prod`
