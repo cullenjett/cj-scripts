@@ -33,11 +33,12 @@ const renderServerSideApp = (req, res) => {
       </Loadable.Capture>
     );
 
-    let bundles = [];
-    if (process.env.NODE_ENV === 'production') {
-      const stats = require('../build/react-loadable.json');
-      bundles = getBundles(stats, modules);
-    }
+    const statsPath = path.resolve(
+      process.cwd(),
+      './build/react-loadable.json'
+    );
+    const stats = require(statsPath);
+    const bundles = getBundles(stats, modules);
 
     if (context.url) {
       res.redirect(context.url);

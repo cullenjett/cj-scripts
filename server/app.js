@@ -51,14 +51,14 @@ app.get('/system', (req, res) => {
 
 app.use(
   process.env.PUBLIC_URL,
-  express.static(path.join(__dirname, '../build'), {
+  express.static(path.join(process.cwd(), './build'), {
     maxage: '30 days'
   })
 );
 
 app.use(
   process.env.PUBLIC_URL,
-  express.static(path.join(__dirname, '../public'), {
+  express.static(path.join(process.cwd(), './public'), {
     maxage: '30 days'
   })
 );

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 process.env.NODE_ENV = 'production';
-process.env.PUBLIC_URL = '/refinance/assets';
+process.env.PUBLIC_URL = '';
 
 process.on('unhandledRejection', err => {
   throw err;
