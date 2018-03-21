@@ -1,6 +1,6 @@
 {
   "name": "cj-scripts",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A React CLI for computer gangsters",
   "repository": "https://github.com/cullenjett/cj-scripts",
   "author": "Cullen Jett <cullenjett@gmail.com>",
@@ -17,8 +17,13 @@
     "format": "prettier --write \"src/**/*.{js,json,css,md}\""
   },
   "lint-staged": {
-    "*.js": ["npm run lint"],
-    "*.{js,json,css,md}": ["npm run format", "git add"]
+    "*.js": [
+      "npm run lint"
+    ],
+    "*.{js,json,css,md}": [
+      "npm run format",
+      "git add"
+    ]
   },
   "dependencies": {
     "autoprefixer": "^8.1.0",
@@ -86,8 +91,12 @@
     "singleQuote": true
   },
   "jest": {
-    "collectCoverageFrom": ["src/**/*.{js,jsx}"],
-    "snapshotSerializers": ["enzyme-to-json/serializer"],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
     "setupFiles": [
       "<rootDir>/config/jest/browserMocks.js",
       "<rootDir>/config/polyfills.js"
@@ -103,6 +112,8 @@
       "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
       "^(?!.*\\.(js|jsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
     },
-    "transformIgnorePatterns": ["[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"]
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"
+    ]
   }
 }
