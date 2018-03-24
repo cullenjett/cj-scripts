@@ -1,12 +1,12 @@
-import path from 'path';
+const path = require('path');
 
-import getClientEnvironment from '../config/env';
+const { resolveConsumingAppPath } = require('../src/utils');
+const env = require(resolveConsumingAppPath('config/env'))();
 
-const env = getClientEnvironment();
-const PUBLIC_URL = env.raw.PUBLIC_URL;
+const { NODE_ENV, PUBLIC_URL } = env.raw;
 let assetManifest;
 
-if (env.raw.NODE_ENV === 'production') {
+if (NODE_ENV === 'production') {
   assetManifest = require(path.resolve(
     process.cwd(),
     'build/asset-manifest.json'
@@ -18,42 +18,7 @@ if (env.raw.NODE_ENV === 'production') {
   };
 }
 
-const preloadScripts = () => {
-  const paths = [assetManifest['node-modules.js'], assetManifest['main.js']];
-
-  return paths.reduce((string, path) => {
-    string += `<link rel="preload" as="script" href=${PUBLIC_URL}/${path} />`;
-    return string;
-  }, '');
-};
-
-const cssLinks = () => {
-  const paths = [assetManifest['main.css']];
-
-  if (env.raw.NODE_ENV === 'production') {
-    return paths.reduce((string, path) => {
-      string += `<link rel="stylesheet" href=${PUBLIC_URL}/${path} />`;
-      return string;
-    }, '');
-  } else {
-    return '';
-  }
-};
-
-const jsScripts = bundles => {
-  const paths = [
-    assetManifest['node-modules.js'],
-    assetManifest['main.js'],
-    ...bundles.filter(b => b.file.endsWith('.js')).map(b => b.file)
-  ];
-
-  return paths.reduce((string, path) => {
-    string += `<script type="text/javascript" src=${PUBLIC_URL}/${path}></script>`;
-    return string;
-  }, '');
-};
-
-const IndexHtml = ({ helmet, initialState, markup, bundles }) => {
+function indexHtml({ helmet, initialState, markup, bundles }) {
   const htmlAttrs = helmet.htmlAttributes.toString();
   const bodyAttrs = helmet.bodyAttributes.toString();
 
@@ -84,6 +49,41 @@ const IndexHtml = ({ helmet, initialState, markup, bundles }) => {
       </body>
     </html>
   `;
-};
+}
 
-export default IndexHtml;
+function preloadScripts() {
+  const paths = [assetManifest['node-modules.js'], assetManifest['main.js']];
+
+  return paths.reduce((string, path) => {
+    string += `<link rel="preload" as="script" href=${PUBLIC_URL}/${path} />`;
+    return string;
+  }, '');
+}
+
+function cssLinks() {
+  const paths = [assetManifest['main.css']];
+
+  if (NODE_ENV === 'production') {
+    return paths.reduce((string, path) => {
+      string += `<link rel="stylesheet" href=${PUBLIC_URL}/${path} />`;
+      return string;
+    }, '');
+  } else {
+    return '';
+  }
+}
+
+function jsScripts(bundles) {
+  const paths = [
+    assetManifest['node-modules.js'],
+    assetManifest['main.js'],
+    ...bundles.filter(b => b.file.endsWith('.js')).map(b => b.file)
+  ];
+
+  return paths.reduce((string, path) => {
+    string += `<script type="text/javascript" src=${PUBLIC_URL}/${path}></script>`;
+    return string;
+  }, '');
+}
+
+module.exports = indexHtml;

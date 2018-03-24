@@ -7,7 +7,7 @@ require('babel-core/register')({
 const cluster = require('cluster');
 const Loadable = require('react-loadable');
 
-const app = require('./app').default;
+const app = require('./app');
 
 const port = process.env.PORT || 3000;
 

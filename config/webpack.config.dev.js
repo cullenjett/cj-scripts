@@ -1,4 +1,3 @@
-const path = require('path');
 const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
@@ -7,23 +6,18 @@ const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const { ReactLoadablePlugin } = require('react-loadable/webpack');
 
-const getClientEnvironment = require('./env');
-
-const env = getClientEnvironment();
-
-const resolvePath = relativePath =>
-  path.resolve(path.join(process.cwd(), './config'), relativePath);
+const { resolveConsumingAppPath } = require('../src/utils');
+const env = require(resolveConsumingAppPath('config/env'))();
 
 module.exports = {
   devtool: 'cheap-module-source-map',
   entry: [
     'webpack-hot-middleware/client?path=/__webpack_hmr&reload=true',
-    // resolvePath('./polyfills'),
     'react-error-overlay',
-    resolvePath('../src/index.js')
+    resolveConsumingAppPath('src/index.js')
   ],
   output: {
-    path: resolvePath('../build'),
+    path: resolveConsumingAppPath('build'),
     filename: '[name].bundle.js',
     chunkFilename: '[name].chunk.js',
     publicPath: env.raw.PUBLIC_URL + '/'
@@ -42,7 +36,7 @@ module.exports = {
             loader: 'eslint-loader'
           }
         ],
-        include: resolvePath('../src')
+        include: resolveConsumingAppPath('src')
       },
       {
         exclude: [
@@ -70,7 +64,7 @@ module.exports = {
       },
       {
         test: /\.(js|jsx)$/,
-        include: resolvePath('../src'),
+        include: resolveConsumingAppPath('src'),
         loader: 'babel-loader',
         options: {
           cacheDirectory: true
@@ -110,7 +104,7 @@ module.exports = {
     new webpack.DefinePlugin(env.forWebpackDefinePlugin),
     new webpack.HotModuleReplacementPlugin(),
     new CaseSensitivePathsPlugin(),
-    new WatchMissingNodeModulesPlugin(resolvePath('../node_modules')),
+    new WatchMissingNodeModulesPlugin(resolveConsumingAppPath('node_modules')),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'node-modules',

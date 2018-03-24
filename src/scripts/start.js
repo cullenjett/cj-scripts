@@ -9,8 +9,6 @@ process.on('unhandledRejection', err => {
   throw err;
 });
 
-require('../../config/env');
-
 const chalk = require('chalk');
 const clearConsole = require('react-dev-utils/clearConsole');
 const {
@@ -20,21 +18,23 @@ const {
 const openBrowser = require('react-dev-utils/openBrowser');
 const Loadable = require('react-loadable');
 
-const app = require('../../server/app').default;
+const app = require('../../server/app');
+const { resolveConsumingAppPath } = require('../utils');
+require(resolveConsumingAppPath('config/env'));
 
 const DEFAULT_PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
 const isInteractive = process.stdout.isTTY;
 
-choosePort(HOST, DEFAULT_PORT)
-  .then(port => {
-    if (!port) {
-      return;
-    }
+Loadable.preloadAll()
+  .then(() => {
+    choosePort(HOST, DEFAULT_PORT).then(port => {
+      if (!port) {
+        return;
+      }
 
-    const urls = prepareUrls('http', HOST, port);
+      const urls = prepareUrls('http', HOST, port);
 
-    Loadable.preloadAll().then(() => {
       app.listen(port, HOST, err => {
         if (err) {
           return console.log(err);

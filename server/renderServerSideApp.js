@@ -1,22 +1,20 @@
-import path from 'path';
-import React from 'react';
-import ReactDOMServer from 'react-dom/server';
-import { Provider } from 'react-redux';
-import { StaticRouter } from 'react-router-dom';
-import Helmet from 'react-helmet';
-import Loadable from 'react-loadable';
-import { getBundles } from 'react-loadable/webpack';
+const React = require('react');
+const ReactDOMServer = require('react-dom/server');
+const { Provider } = require('react-redux');
+const { StaticRouter } = require('react-router-dom');
+const { Helmet } = require('react-helmet');
+const Loadable = require('react-loadable');
+const { getBundles } = require('react-loadable/webpack');
 
-import indexHtml from './indexHtml';
-import fetchDataForRender from './fetchDataForRender';
-
-const App = require(path.resolve(process.cwd(), 'src/App.js')).default;
-const configureStore = require(path.resolve(
-  process.cwd(),
+const { resolveConsumingAppPath } = require('../src/utils');
+const indexHtml = require('./indexHtml');
+const fetchDataForRender = require('./fetchDataForRender');
+const App = require(resolveConsumingAppPath('src/App.js')).default;
+const configureStore = require(resolveConsumingAppPath(
   'src/utils/configureStore.js'
 )).default;
 
-const renderServerSideApp = (req, res) => {
+function renderServerSideApp(req, res) {
   const store = configureStore(undefined, { logger: false });
 
   fetchDataForRender(req, store).then(() => {
@@ -33,11 +31,7 @@ const renderServerSideApp = (req, res) => {
       </Loadable.Capture>
     );
 
-    const statsPath = path.resolve(
-      process.cwd(),
-      './build/react-loadable.json'
-    );
-    const stats = require(statsPath);
+    const stats = require(resolveConsumingAppPath('build/react-loadable.json'));
     const bundles = getBundles(stats, modules);
 
     if (context.url) {
@@ -54,6 +48,6 @@ const renderServerSideApp = (req, res) => {
       res.status(200).send(fullMarkup);
     }
   });
-};
+}
 
-export default renderServerSideApp;
+module.exports = renderServerSideApp;

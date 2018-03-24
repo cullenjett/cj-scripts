@@ -1,5 +1,4 @@
 const autoprefixer = require('autoprefixer');
-const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
@@ -7,12 +6,8 @@ const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const { ReactLoadablePlugin } = require('react-loadable/webpack');
 
-const getClientEnvironment = require('./env');
-
-const env = getClientEnvironment();
-
-const resolvePath = relativePath =>
-  path.resolve(path.join(process.cwd(), './config'), relativePath);
+const { resolveConsumingAppPath } = require('../src/utils');
+const env = require(resolveConsumingAppPath('config/env'))();
 
 if (env.raw.NODE_ENV !== 'production') {
   throw new Error('Production builds must have NODE_ENV=production.');
@@ -21,9 +16,12 @@ if (env.raw.NODE_ENV !== 'production') {
 module.exports = {
   bail: true,
   devtool: 'source-map',
-  entry: [resolvePath('./polyfills'), resolvePath('../src/index.js')],
+  entry: [
+    resolveConsumingAppPath('config/polyfills'),
+    resolveConsumingAppPath('src/index.js')
+  ],
   output: {
-    path: resolvePath('../build'),
+    path: resolveConsumingAppPath('build'),
     filename: 'static/js/[name].[chunkhash:8].js',
     chunkFilename: 'static/js/[name].[chunkhash:8].chunk.js',
     publicPath: env.raw.PUBLIC_URL + '/'
@@ -42,7 +40,7 @@ module.exports = {
             loader: 'eslint-loader'
           }
         ],
-        include: resolvePath('../src')
+        include: resolveConsumingAppPath('src')
       },
       {
         exclude: [
@@ -70,7 +68,7 @@ module.exports = {
       },
       {
         test: /\.(js|jsx)$/,
-        include: resolvePath('../src'),
+        include: resolveConsumingAppPath('src'),
         loader: 'babel-loader',
         options: {
           compact: true

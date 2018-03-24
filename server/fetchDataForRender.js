@@ -1,9 +1,9 @@
-import url from 'url';
-import { matchPath } from 'react-router-dom';
+const url = require('url');
+const { matchPath } = require('react-router-dom');
 
 const ROUTES_THAT_FETCH_DATA = [];
 
-const fetchDataForRender = (req, store) => {
+function fetchDataForRender(req, store) {
   const promises = [];
 
   ROUTES_THAT_FETCH_DATA.some(route => {
@@ -19,6 +19,6 @@ const fetchDataForRender = (req, store) => {
   });
 
   return Promise.all(promises);
-};
+}
 
-export default fetchDataForRender;
+module.exports = fetchDataForRender;

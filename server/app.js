@@ -1,15 +1,15 @@
-import os from 'os';
-import path from 'path';
-import express from 'express';
-import shrinkRay from 'shrink-ray';
-import helmet from 'helmet';
-import webpack from 'webpack';
-import webpackDevMiddleware from 'webpack-dev-middleware';
-import webpackHotMiddleware from 'webpack-hot-middleware';
-import morgan from 'morgan';
+const os = require('os');
+const path = require('path');
+const express = require('express');
+const shrinkRay = require('shrink-ray');
+const helmet = require('helmet');
+const webpack = require('webpack');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
+const morgan = require('morgan');
 
-import config from '../config/webpack.config.dev';
-import renderServerSideApp from './renderServerSideApp';
+const config = require('../config/webpack.config.dev');
+const renderServerSideApp = require('./renderServerSideApp');
 
 const app = express();
 
@@ -95,4 +95,4 @@ if (process.env.NODE_ENV === 'production') {
 
 app.get('*', renderServerSideApp);
 
-export default app;
+module.exports = app;
