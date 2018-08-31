@@ -1,29 +1,26 @@
-process.env.NODE_ENV = 'test';
+process.on('unhandledRejection', (err) => {
+  throw err
+})
 
-process.on('unhandledRejection', err => {
-  throw err;
-});
+process.env.NODE_ENV = 'test'
 
-const path = require('path');
-const jest = require('jest');
+const jest = require('jest')
+const path = require('path')
 
-const { resolveConsumingAppPath } = require('../utils');
-require(resolveConsumingAppPath('config/env'));
+const { getAppEnv } = require('../utils/get-app-env')
+const args = process.argv.slice(2)
+const localConfigPath = path.join(__dirname, '../config/jest/jest.config.js')
 
-const argv = process.argv.slice(2);
+getAppEnv()
 
-if (!process.env.CI && argv.indexOf('--coverage') < 0) {
-  argv.push('--watch');
+args.push('--config', localConfigPath)
+
+if (!process.env.CI && args.indexOf('--coverage') < 0) {
+  args.push('--watch')
 }
 
 if (process.env.CI) {
-  argv.push('--runInBand');
+  args.push('--runInBand')
 }
 
-const configFilePath = path.resolve(
-  path.join(__dirname, '../../config/jest/jest.config.js')
-);
-
-argv.push('--config', configFilePath);
-
-jest.run(argv);
+jest.run(args)
